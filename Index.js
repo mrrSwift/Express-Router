@@ -17,6 +17,6 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 
 }
 
-module.exports.autoFetch = (router, controllersAddress) => {
+module.exports.autoFetch = (app, router, routesAddress = "./routes", controllersAddress = "./routes", middlewareAddress = "./routes") => {
 
 }
