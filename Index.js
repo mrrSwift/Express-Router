@@ -1,6 +1,6 @@
 const { readdirSync } = require('fs');
 const swift = require('swiftly-tools');
-
+let routeCount = 0
 module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 
     for (const file of readdirSync(routesAddress)) {
@@ -55,6 +55,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
                 }
                 usage.push(item.use)
                 router[item.method](item.route, usage)
+                routeCount += 1
                 console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route, 'fgCyan'), colorful(" Loaded" + " \n", 'fgYellow'))
 
             }
