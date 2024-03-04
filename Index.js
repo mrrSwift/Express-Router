@@ -31,17 +31,21 @@ module.exports.autoFetch = (app, router, controllersAddress = "./controllers", m
 
         }
     }
-
+    let routes = []
     for(const file of readdirSync(controllersAddress)){
-
         const controllerFile =  require(controllersAddress + "/" + file)
         const usage = []
         controllerFile.middelware.forEach(item => {
             usage.push(middelware[item])
         });
+        routes.push(controllerFile.route)
         usage.push(controllerFile.run)
         router.use(controllerFile.method, usage)
-
+    }
+    
+    routes = [...new Set(routes)]
+    for(const route of routes){
+   
     }
 
 
