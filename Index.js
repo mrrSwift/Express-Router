@@ -53,6 +53,7 @@ module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middl
                 break;
 
             default:
+                console.log("Commend not found!")
                 break;
         }
     })
