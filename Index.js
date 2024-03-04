@@ -27,14 +27,14 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
             try {
                 const middelwareFile = require(middlewareAddress + "/" + file)
                 middelware[middelwareFile.name] = middelwareFile.run
-                console.log(colorful("🟢 ~ " + middelwareFile.name + " middleware loaded \n", 'fgGreen'))
+                console.log(colorful("🟢 ~ " + middelwareFile.name + " middleware loaded ", 'fgGreen'))
             } catch (error) {
-                console.log(colorful("🟠 ~ Can't load \n" + file, 'fgRed'))
+                console.log(colorful("🟠 ~ Can't load " + file, 'fgRed'))
 
             }
         }
     } catch (error) {
-        console.log(colorful("🟠 ~ Middleware not found \n", 'fgRed'))
+        console.log(colorful("🟠 ~ Middleware not found. \n", 'fgRed'))
 
     }
 
@@ -45,7 +45,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
         const router = express.Router();
         controller.items.forEach(item => {
             if (item?.off) {
-                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded" + " \n", 'fgYellow'))
+                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded." , 'fgYellow'))
             } else {
                 const usage = []
                 if (item.middelware) {
@@ -56,7 +56,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
                 usage.push(item.use)
                 router[item.method](item.route, usage)
                 routeCount += 1
-                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route, 'fgCyan'), colorful(" Loaded" + " \n", 'fgYellow'))
+                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route, 'fgCyan'), colorful(" Loaded." , 'fgYellow'))
 
             }
         })
