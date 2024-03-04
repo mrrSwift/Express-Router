@@ -31,26 +31,26 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
 
             }
         }
-     } catch (error) {
-        console.log(swift.color.console("Middleware not found" , 'fgRed'))
-        
-     }
-   
-    
+    } catch (error) {
+        console.log(swift.color.console("Middleware not found", 'fgRed'))
+
+    }
+
+
     const baseRouter = express.Router();
-    for(const controllerFile of readdirSync(controllersAddress)){
+    for (const controllerFile of readdirSync(controllersAddress)) {
         const controller = require(controllersAddress + "/" + controllerFile)
         const router = express.Router();
-        controller.items.forEach(item=>{
+        controller.items.forEach(item => {
             const usage = []
-            if(item.middelware){
-                item.middelware.forEach(midd=>{
+            if (item.middelware) {
+                item.middelware.forEach(midd => {
                     usage.push(middelware[midd])
                 })
             }
             usage.push(item.use)
             router[item.method](item.route, usage)
-          console.log(swift.color.console(item.method + ": " , 'fgRed'),swift.color.console( controller.baseRoute + item.route + " Loaded" + ": " , 'fgCyan'))
+            console.log(swift.color.console(item.method + ": ", 'fgRed'), swift.color.console(controller.baseRoute + item.route + " Loaded" + ": ", 'fgCyan'))
 
         })
         baseRouter.use(controller.baseRoute, router)
