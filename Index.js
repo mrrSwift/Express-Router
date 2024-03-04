@@ -7,9 +7,9 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
         try {
             const routeFile = require(routesAddress + "/" + file)
             app.use(routeFile.route, routeFile.router)
-            swift.color.console(routeFile.route + " route loaded", 'fgGreen')
+            console.log(swift.color.console(routeFile.route + " route loaded", 'fgGreen'))
         } catch (error) {
-            swift.color.console("Can't load " + file, 'fgRed')
+            console.log(swift.color.console("Can't load " + file, 'fgRed'))
         }
     }
 
