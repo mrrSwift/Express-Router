@@ -19,7 +19,7 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 module.exports.autoFetch = (express, controllersAddress = "./controllers", middlewareAddress = "./middleware") => {
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
     console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
-    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗`, 'bgCyan'))
+    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
     const middelware = {}
 
     try {
