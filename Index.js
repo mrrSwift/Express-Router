@@ -7,7 +7,7 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
         try {
             const routeFile = require(routesAddress + "/" + file)
             app.use(routeFile.route, routeFile.router)
-            console.log(colorful("🟢 ~ "+routeFile.route + " route loaded", 'fgGreen'))
+            console.log(colorful("🟢 ~ " + routeFile.route + " route loaded", 'fgGreen'))
         } catch (error) {
             console.log(colorful("🟠 ~ Can't load " + file, 'fgRed'))
         }
@@ -17,9 +17,9 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 }
 
 module.exports.autoFetch = (express, controllersAddress = "./controllers", middlewareAddress = "./middleware") => {
-    console.log (colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
-    console.log (colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
-    console.log (colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗`, 'bgCyan'))
+    console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
+    console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
+    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗`, 'bgCyan'))
     const middelware = {}
 
     try {
@@ -27,7 +27,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
             try {
                 const middelwareFile = require(middlewareAddress + "/" + file)
                 middelware[middelwareFile.name] = middelwareFile.run
-                console.log(colorful("🟢 ~ "+middelwareFile.name + " middleware loaded \n", 'fgGreen'))
+                console.log(colorful("🟢 ~ " + middelwareFile.name + " middleware loaded \n", 'fgGreen'))
             } catch (error) {
                 console.log(colorful("🟠 ~ Can't load \n" + file, 'fgRed'))
 
@@ -44,20 +44,20 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
         const controller = require(controllersAddress + "/" + controllerFile)
         const router = express.Router();
         controller.items.forEach(item => {
-           if(item?.off){
-            console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded" + " \n", 'fgYellow'))
-           }else{
-            const usage = []
-            if (item.middelware) {
-                item.middelware.forEach(midd => {
-                    usage.push(middelware[midd])
-                })
-            }
-            usage.push(item.use)
-            router[item.method](item.route, usage)
-            console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route , 'fgCyan'),colorful( " Loaded" + " \n", 'fgYellow') )
+            if (item?.off) {
+                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded" + " \n", 'fgYellow'))
+            } else {
+                const usage = []
+                if (item.middelware) {
+                    item.middelware.forEach(midd => {
+                        usage.push(middelware[midd])
+                    })
+                }
+                usage.push(item.use)
+                router[item.method](item.route, usage)
+                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route, 'fgCyan'), colorful(" Loaded" + " \n", 'fgYellow'))
 
-           }
+            }
         })
         baseRouter.use(controller.baseRoute, router)
     }
@@ -65,6 +65,6 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
     return baseRouter
 }
 
-const colorful = (data, color)=>{
-    return swift.color.console(data,color)
+const colorful = (data, color) => {
+    return swift.color.console(data, color)
 }
