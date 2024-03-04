@@ -25,7 +25,7 @@ module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middl
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
     console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
     console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
-    const middelware = {}
+    const middleware = {}
     const controllersAddress = path.join("./",cAddress)
     const middlewareAddress = path.join("./",mAddress)
 
@@ -61,9 +61,9 @@ module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middl
         for (const file of readdirSync(middlewareAddress)) {
             try {
                 const folderPath = path.join(__dirname,"../../",middlewareAddress, file)
-                const middelwareFile = require(folderPath)
-                middelware[middelwareFile.name] = middelwareFile.run
-                console.log(colorful("🟢 ~ " + middelwareFile.name + " middleware loaded ", 'fgGreen'))
+                const middlewareFile = require(folderPath)
+                middleware[middlewareFile.name] = middlewareFile.run
+                console.log(colorful("🟢 ~ " + middlewareFile.name + " middleware loaded ", 'fgGreen'))
             } catch (error) {
                 console.log(colorful("🟠 ~ Can't load " + file, 'fgRed'))
 
@@ -85,9 +85,9 @@ module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middl
                 console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded.", 'fgYellow'))
             } else {
                 const usage = []
-                if (item.middelware) {
-                    item.middelware.forEach(midd => {
-                        usage.push(middelware[midd])
+                if (item.middleware) {
+                    item.middleware.forEach(midd => {
+                        usage.push(middleware[midd])
                     })
                 }
                 usage.push(item.use)
