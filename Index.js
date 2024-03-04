@@ -44,6 +44,9 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
         const controller = require(controllersAddress + "/" + controllerFile)
         const router = express.Router();
         controller.items.forEach(item => {
+           if(item?.off){
+            console.log(swift.color.console(item.method + ": ", 'fgRed'), swift.color.console(controller.baseRoute + item.route + " Not loaded" + " \n", 'fgYellow'))
+           }else{
             const usage = []
             if (item.middelware) {
                 item.middelware.forEach(midd => {
@@ -54,6 +57,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
             router[item.method](item.route, usage)
             console.log(swift.color.console(item.method + ": ", 'fgRed'), swift.color.console(controller.baseRoute + item.route + " Loaded" + " \n", 'fgCyan'))
 
+           }
         })
         baseRouter.use(controller.baseRoute, router)
     }
