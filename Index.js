@@ -6,7 +6,6 @@ let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
 
-
 module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middleware") => {
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
     console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
