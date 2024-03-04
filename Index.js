@@ -62,6 +62,7 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
         })
         baseRouter.use(controller.baseRoute, router)
     }
+    console.log(colorful(routeCount + " Route loaded", 'fgRed'))
 
     return baseRouter
 }
