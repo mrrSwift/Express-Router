@@ -43,6 +43,8 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
             }
             usage.push(item.use)
             router[item.method](item.route, usage)
+          console.log(swift.color.console(item.method + ": " , 'fgRed'),swift.color.console( controller.baseRoute + item.route + " Loaded" + ": " , 'fgCyan'))
+
         })
         baseRouter.use(controller.baseRoute, router)
     }
