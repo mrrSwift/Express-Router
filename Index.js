@@ -20,16 +20,23 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
 
     const middelware = {}
 
-    for (const file of readdirSync(middlewareAddress)) {
-        try {
-            const middelwareFile = require(middlewareAddress + "/" + file)
-            middelware[middelwareFile.name] = middelwareFile.run
-            swift.color.console(middelwareFile.name + " middleware loaded", 'fgGreen')
-        } catch (error) {
-            swift.color.console("Can't load " + file, 'fgRed')
+    try {
+        for (const file of readdirSync(middlewareAddress)) {
+            try {
+                const middelwareFile = require(middlewareAddress + "/" + file)
+                middelware[middelwareFile.name] = middelwareFile.run
+                console.log(swift.color.console(middelwareFile.name + " middleware loaded", 'fgGreen'))
+            } catch (error) {
+                console.log(swift.color.console("Can't load " + file, 'fgRed'))
 
+            }
         }
-    }
+     } catch (error) {
+        console.log(swift.color.console("Middleware not found" , 'fgRed'))
+        
+     }
+   
+    
     const baseRouter = express.Router();
     for(const controllerFile of readdirSync(controllersAddress)){
         const controller = require(controllersAddress + "/" + controllerFile)
