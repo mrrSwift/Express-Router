@@ -6,20 +6,6 @@ let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
 
-module.exports.fetchRoute = (app, routesAddress = "./routes") => {
-
-    for (const file of readdirSync(routesAddress)) {
-        try {
-            const routeFile = require(routesAddress + "/" + file)
-            app.use(routeFile.route, routeFile.router)
-            console.log(colorful("🟢 ~ " + routeFile.route + " route loaded", 'fgGreen'))
-        } catch (error) {
-            console.log(colorful("🟠 ~ Can't load " + file, 'fgRed'))
-        }
-    }
-
-
-}
 
 module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middleware") => {
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
