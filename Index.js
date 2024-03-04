@@ -1,5 +1,4 @@
 const { readdirSync } = require('fs');
-const path = require('path');
 const swift = require('swiftly-tools');
 
 module.exports.fetchRoute = (app, routesAddress = "./routes") => {
@@ -17,7 +16,7 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 
 }
 
-module.exports.autoFetch = (app, router, controllersAddress = "./controllers", middlewareAddress = "./middleware") => {
+module.exports.autoFetch = (express, controllersAddress = "./controllers", middlewareAddress = "./middleware") => {
 
     const middelware = {}
 
@@ -32,22 +31,30 @@ module.exports.autoFetch = (app, router, controllersAddress = "./controllers", m
         }
     }
     let routes = []
-    for(const file of readdirSync(controllersAddress)){
-        const controllerFile =  require(controllersAddress + "/" + file)
+    let routesFunction = []
+
+    for (const file of readdirSync(controllersAddress)) {
+        const controllerFile = require(controllersAddress + "/" + file)
         const usage = []
         controllerFile.middelware.forEach(item => {
             usage.push(middelware[item])
         });
-        routes.push(controllerFile.route)
+        routes.push(controllerFile.baseRoute)
         usage.push(controllerFile.run)
-        router.use(controllerFile.method, usage)
+        routesFunction.push({ route: controllerFile.route, baseRoute: controllerFile.baseRoute, method: controllerFile.method, use: usage })
     }
-    
+
     routes = [...new Set(routes)]
-    for(const route of routes){
-   
+
+    const baseRouter = express.Router();
+    for (const baseRoute of routes) {
+        const filterFile = routesFunction.filter(item => item.baseRoute === baseRoute)
+        const router = express.Router();
+        for (const data of filterFile) {
+            router[data.method](data.route, data.use)
+        }
+        baseRouter.use(baseRoute, router)
     }
 
-
-
+return baseRouter
 }
