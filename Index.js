@@ -4,8 +4,7 @@ let routeCount = 0
 const readline = require("readline");
 let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
-
-
+const path = require('path');
 
 module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 
@@ -22,12 +21,13 @@ module.exports.fetchRoute = (app, routesAddress = "./routes") => {
 
 }
 
-module.exports.autoFetch = (express, controllersAddress = "./controllers", middlewareAddress = "./middleware") => {
+module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middleware") => {
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
     console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
     console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
     const middelware = {}
-
+    const controllersAddress = path.join("./",cAddress)
+    const middlewareAddress = path.join("./",mAddress)
 
     rl.on('line', (input) => {
         switch (input) {
@@ -60,7 +60,8 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
     try {
         for (const file of readdirSync(middlewareAddress)) {
             try {
-                const middelwareFile = require(middlewareAddress + "/" + file)
+                const folderPath = path.join(__dirname,"../../",middlewareAddress, file)
+                const middelwareFile = require(folderPath)
                 middelware[middelwareFile.name] = middelwareFile.run
                 console.log(colorful("🟢 ~ " + middelwareFile.name + " middleware loaded ", 'fgGreen'))
             } catch (error) {
@@ -76,7 +77,8 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
 
     const baseRouter = express.Router();
     for (const controllerFile of readdirSync(controllersAddress)) {
-        const controller = require(controllersAddress + "/" + controllerFile)
+        const folderPath = path.join(__dirname,"../../",controllersAddress, controllerFile)
+        const controller = require(folderPath)
         const router = express.Router();
         controller.items.forEach(item => {
             if (item?.off) {
