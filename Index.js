@@ -30,31 +30,22 @@ module.exports.autoFetch = (express, controllersAddress = "./controllers", middl
 
         }
     }
-    let routes = []
-    let routesFunction = []
-
-    for (const file of readdirSync(controllersAddress)) {
-        const controllerFile = require(controllersAddress + "/" + file)
-        const usage = []
-        controllerFile.middelware.forEach(item => {
-            usage.push(middelware[item])
-        });
-        routes.push(controllerFile.baseRoute)
-        usage.push(controllerFile.run)
-        routesFunction.push({ route: controllerFile.route, baseRoute: controllerFile.baseRoute, method: controllerFile.method, use: usage })
-    }
-
-    routes = [...new Set(routes)]
-
     const baseRouter = express.Router();
-    for (const baseRoute of routes) {
-        const filterFile = routesFunction.filter(item => item.baseRoute === baseRoute)
+    for(const controllerFile of readdirSync(controllersAddress)){
+        const controller = require(controllersAddress + "/" + controllerFile)
         const router = express.Router();
-        for (const data of filterFile) {
-            router[data.method](data.route, data.use)
-        }
-        baseRouter.use(baseRoute, router)
+        controller.items.forEach(item=>{
+            const usage = []
+            if(item.middelware){
+                item.middelware.forEach(midd=>{
+                    usage.push(middelware[midd])
+                })
+            }
+            usage.push(item.use)
+            router[item.method](item.route, usage)
+        })
+        baseRouter.use(controller.baseRoute, router)
     }
 
-return baseRouter
+    return baseRouter
 }
