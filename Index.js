@@ -1,5 +1,4 @@
 const { readdirSync } = require('fs');
-const swift = require('swiftly-tools');
 let routeCount = 0
 const readline = require("readline");
 let rl = readline.createInterface(process.stdin, process.stdout);

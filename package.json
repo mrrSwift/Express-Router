@@ -1,14 +1,11 @@
 {
   "name": "express-route-detector",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "",
   "main": "Index.js",
-  "types": "index.d.ts",
+  "types": "Index.d.ts",
   "scripts": {
     "test": "swiftly"
-  },
-  "bin": {
-    "swiftly": "bin/index.js"
   },
   "keywords": [
     "express"
