@@ -5,7 +5,7 @@ let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
 
-module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middleware") => {
+module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "controllers", mAddress = "middleware") => {
     console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
     console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
     console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
@@ -70,9 +70,14 @@ module.exports.autoFetch = (express, cAddress = "controllers", mAddress = "middl
                 console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded.", 'fgYellow'))
             } else {
                 const usage = []
-                if (item.middleware) {
+                if (item?.middleware) {
                     item.middleware.forEach(midd => {
-                        usage.push(middleware[midd])
+                        if(midd == pAddress){
+                            usage.push(middleware[midd](item.permission))
+
+                        }else{
+                            usage.push(middleware[midd])
+                        }
                     })
                 }
                 usage.push(item.use)
