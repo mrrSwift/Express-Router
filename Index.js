@@ -30,7 +30,7 @@ module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "cont
                 );
 
                 console.log(colorful(`Memory:`, 'fgCyan'), colorful(`${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`, 'fgRed'))
-                console.log(colorful(`Memory:`, 'fgCyan'), colorful(`${Math.round(process.cpuUsage().user / total * 100)} %`, 'fgRed'))
+                console.log(colorful(`CPU:`, 'fgCyan'), colorful(`${Math.round(process.cpuUsage().user / total * 100)} %`, 'fgRed'))
                 break;
             case "env":
                 console.log(process.env)
