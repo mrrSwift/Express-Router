@@ -20,7 +20,8 @@ const express = require("express");
 
 const app = express();
 
-app.use(autoFetch(express))// By defualt pAddress = "hasPermission", cAddress = "controller", mAddress = "middleware" 
+app.use(autoFetch(express))
+// By defualt pAddress = "hasPermission", cAddress = "controllerw", mAddress = "middleware" 
 
 app.use(autoFetch(
   express,
