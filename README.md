@@ -33,7 +33,22 @@ app.listen(port, () => {
 
 controller.js
 ```js
-
+const home = (async (req, res) => {
+    res.status(200).json({msg:'Hello world'});
+})
+module.exports = {
+    baseRoute: "/",
+    items: [
+        {
+            off: false,
+            route: "/",
+            method: "get",
+            middleware: [], //option
+            permission: "CONTENTUS", //option
+            use: home
+        },
+    ]
+}
 
 ### Cli commends
  - routes
