@@ -1,12 +1,20 @@
-const { readdirSync } = require('fs');
+const { readdirSync, mkdir } = require('fs');
 let routeCount = 0
 const readline = require("readline");
 let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
+let fetcher = false
+
 
 module.exports.cli = ()=>{
-    rl.on('line', (input) => {
+    if(!fetcher){
+        console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
+        console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
+        console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
+    }
+    fetcher = true
+    rl.on('line',async (input) => {
         switch (input) {
             case "routes":
                 console.log(colorful(routeCount + " Route loaded", 'fgRed'))
@@ -23,22 +31,40 @@ module.exports.cli = ()=>{
                 console.log(colorful(`Memory:`, 'fgCyan'), colorful(`${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`, 'fgRed'))
                 console.log(colorful(`CPU:`, 'fgCyan'), colorful(`${Math.round(process.cpuUsage().user / total * 100)} %`, 'fgRed'))
                 break;
-                
+
             case "env":
                 console.log(process.env)
+                break;
+            
+            case "init":
+               mkdir(path.join(process.cwd(), `/config/`),()=>{
+                console.log('The *config* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/app/routes/`),()=>{
+                console.log('The *routes* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/app/controllers/`),()=>{
+                console.log('The *controllers* folder has been created')
+               });
                 break;
 
             default:
                 console.log("Commend not found!")
                 break;
         }
+        
     })
 }
 
 module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "controllers", mAddress = "middleware") => {
-    console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
-    console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
-    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
+
+    if(!fetcher){
+        console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
+        console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
+        console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
+    }
+
+    fetcher = true
     const middleware = {}
     const controllersAddress = path.join("./",cAddress)
     const middlewareAddress = path.join("./",mAddress)
@@ -124,3 +150,4 @@ const colorful = (text, color)=> {
 }
 
 
+this.cli()
