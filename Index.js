@@ -59,7 +59,7 @@ module.exports.cli = ()=>{
                 console.log('The *uploads* folder has been created')
                });
                mkdir(path.join(process.cwd(), `/models/`),()=>{
-                console.log('The *models* folder has been created')
+                console.log('The *models* folder has been created\n')
                });
                 break;
 
