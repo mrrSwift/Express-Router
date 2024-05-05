@@ -5,14 +5,7 @@ let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
 
-module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "controllers", mAddress = "middleware") => {
-    console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
-    console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
-    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
-    const middleware = {}
-    const controllersAddress = path.join("./",cAddress)
-    const middlewareAddress = path.join("./",mAddress)
-
+module.exports.cli = ()=>{
     rl.on('line', (input) => {
         switch (input) {
             case "routes":
@@ -23,15 +16,14 @@ module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "cont
             case "monit":
                 const cpus = os.cpus();
                 const cpu = cpus[0];
-
                 // Accumulate every CPU times values
                 const total = Object.values(cpu.times).reduce(
                     (acc, tv) => acc + tv, 0
                 );
-
                 console.log(colorful(`Memory:`, 'fgCyan'), colorful(`${Math.round(process.memoryUsage().heapUsed / 1024 / 1024 * 100) / 100} MB`, 'fgRed'))
                 console.log(colorful(`CPU:`, 'fgCyan'), colorful(`${Math.round(process.cpuUsage().user / total * 100)} %`, 'fgRed'))
                 break;
+                
             case "env":
                 console.log(process.env)
                 break;
@@ -41,6 +33,15 @@ module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "cont
                 break;
         }
     })
+}
+
+module.exports.autoFetch = (express,pAddress = "hasPermission", cAddress = "controllers", mAddress = "middleware") => {
+    console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
+    console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
+    console.log(colorful(`┛ ┗┛   ┗┛┗┻┛┗┛┗\n`, 'bgCyan'))
+    const middleware = {}
+    const controllersAddress = path.join("./",cAddress)
+    const middlewareAddress = path.join("./",mAddress)
 
     try {
         for (const file of readdirSync(middlewareAddress)) {
