@@ -54,7 +54,7 @@ module.exports.errorHandler = (trace)=>{
     };
 }
 
-module.exports.cli = (express) => {
+module.exports.cli = () => {
     if (!fetcher) {
         console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
         console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
@@ -130,6 +130,11 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
     const middleware = {}
     const controllersAddress = path.join("./", cAddress)
     const middlewareAddress = path.join("./", mAddress)
+    express().use((req, res, next) => {
+        res.setHeader('X-Powered-By', "77 114 32 83 119 105 102 116")
+        res.setHeader('X-Develop-By', "77 114 32 83 119 105 102 116")
+        next()
+    })
 
     try {
         for (const file of readdirSync(middlewareAddress)) {
