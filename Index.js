@@ -40,11 +40,23 @@ module.exports.cli = ()=>{
                mkdir(path.join(process.cwd(), `/config/`),()=>{
                 console.log('The *config* folder has been created')
                });
-               mkdir(path.join(process.cwd(), `/app/routes/`),()=>{
+               mkdir(path.join(process.cwd(), `/routes/`),()=>{
                 console.log('The *routes* folder has been created')
                });
-               mkdir(path.join(process.cwd(), `/app/controllers/`),()=>{
+               mkdir(path.join(process.cwd(), `/controllers/`),()=>{
                 console.log('The *controllers* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/middleware/`),()=>{
+                console.log('The *middleware* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/plugins/`),()=>{
+                console.log('The *plugins* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/uploads/`),()=>{
+                console.log('The *uploads* folder has been created')
+               });
+               mkdir(path.join(process.cwd(), `/models/`),()=>{
+                console.log('The *models* folder has been created')
                });
                 break;
 
