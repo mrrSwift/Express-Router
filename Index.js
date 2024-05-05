@@ -5,9 +5,69 @@ let rl = readline.createInterface(process.stdin, process.stdout);
 const os = require('os');
 const path = require('path');
 let fetcher = false
+const { constants } = require("../constants");
 
+module.exports.errorHandler = (err, req, res, next) => {
+    const statusCode = res.statusCode ? res.statusCode : 500;
+  
+    switch (statusCode) {
+      case constants.VALIDATION_ERROR:
+        res.status(statusCode).json({
+          title: "Validation Failed ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.NOT_FOUND:
+        res.status(statusCode).json({
+          title: "Not found ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.FORBIDOEN:
+        res.status(statusCode).json({
+          title: "Forbidoen ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.SERVER_ERROR:
+        res.status(statusCode).json({
+          title: "Server Error ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.UNAUTHORIZED:
+        res.status(statusCode).json({
+          title: "Unauthorized ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.SITE_UNAUTHORIZED:
+        res.status(statusCode).json({
+          title: "Site Unauthorized ",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      case constants.TOO_MANY:
+        res.status(statusCode).json({
+          title: "Too many request",
+          msg: err.message,
+          stackTrace: err.stack,
+        });
+        break;
+      default:
+        console.log(err);
+        res.status(500).json({ err: err.message, msg: "Unhandled error" })
+        break;
+    }
+  };
 
-module.exports.cli = ()=>{
+module.exports.cli = (express)=>{
     if(!fetcher){
         console.log(colorful(`┳┳┓    ┏┓   •┏ `, 'bgCyan'))
         console.log(colorful(`┃┃┃┏┓  ┗┓┓┏┏┓╋╋`, 'bgCyan'))
