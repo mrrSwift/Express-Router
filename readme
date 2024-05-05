@@ -30,3 +30,8 @@ app.listen(port, () => {
 
 ```
 
+### Cli commends
+ - routes
+ - monit
+ - init
+ - env
