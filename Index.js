@@ -1,5 +1,5 @@
 const { readdirSync, mkdir } = require('fs');
-const { constants } = require("../constants");
+const { constants } = require("./constants");
 const readline = require("readline");
 const os = require('os');
 const path = require('path');
