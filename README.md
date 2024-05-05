@@ -20,8 +20,14 @@ const express = require("express");
 
 const app = express();
 
-app.use(autoFetch(express))
-app.use(autoFetch(express, pAddress = "hasPermission", cAddress = "admins", mAddress = "middleware"))
+app.use(autoFetch(express))// By defualt pAddress = "hasPermission", cAddress = "controller", mAddress = "middleware" 
+
+app.use(autoFetch(
+  express,
+  pAddress = "hasPermission", //Permission middleware name
+  cAddress = "admins", //Controller folder
+  mAddress = "middleware" //Middlewawre folder
+  ))
 
 app.use(errorHandler);
 
@@ -30,6 +36,7 @@ app.listen(port, () => {
 });
 
 ```
+
 
 controller.js
 ```js
