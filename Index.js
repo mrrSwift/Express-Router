@@ -37,6 +37,9 @@ module.exports.cli = ()=>{
                 break;
             
             case "init":
+               mkdir(path.join(process.cwd(), `/admins/`),()=>{
+                console.log('The *admins* folder has been created')
+               });
                mkdir(path.join(process.cwd(), `/config/`),()=>{
                 console.log('The *config* folder has been created')
                });
