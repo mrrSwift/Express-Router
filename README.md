@@ -1,6 +1,6 @@
 # Express-Router
 
-a npm module fo Express app inspired by Nuxt.js
+a npm module for Express app inspired by Nuxt.js
 
 ## Ability
  - Cli
@@ -13,6 +13,7 @@ a npm module fo Express app inspired by Nuxt.js
 ```
 ### Usage 
 
+server.js
 ```js
 const { autoFetch, errorHandler } = require('express-route-detector')
 const express = require("express");
@@ -29,6 +30,10 @@ app.listen(port, () => {
 });
 
 ```
+
+controller.js
+```js
+
 
 ### Cli commends
  - routes
