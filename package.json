@@ -1,6 +1,6 @@
 {
   "name": "express-route-detector",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "",
   "main": "Index.js",
   "scripts": {
