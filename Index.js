@@ -177,7 +177,7 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                 usage.push(item.use)
                 router[item.method](item.route, usage)
                 routeCount += 1
-                console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route, 'fgCyan'), colorful(" Loaded.", 'fgYellow'))
+                console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed')+ colorful(controller.baseRoute + item.route, 'fgCyan')+ colorful(" Loaded.", 'fgYellow')).replace("//","/"))
 
             }
         })
