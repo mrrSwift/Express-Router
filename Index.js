@@ -3,9 +3,26 @@ const { constants } = require("./constants");
 const readline = require("readline");
 const os = require('os');
 const path = require('path');
-let fetcher = false
+let fetcher = false;
 let rl = readline.createInterface(process.stdin, process.stdout);
-let routeCount = 0
+let routeCount = 0;
+let swaggerData = {};
+
+module.exports.swaggerDoc = (name, version, description, url, tags) => {
+const swagger = {
+    Swift: version,
+    info: {
+      title: name,
+      description,
+      version,
+      contact: { name: 'Swift' }
+    },
+    servers: [ { url } ],
+    paths: { },
+    components: {},
+    tags
+  }
+}
 
 module.exports.errorHandler = (trace)=>{
     return (err, req, res, next) => {
@@ -178,7 +195,9 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                 router[item.method](item.route, usage)
                 routeCount += 1
                 console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed')+ colorful(controller.baseRoute + item.route, 'fgCyan')+ colorful(" Loaded.", 'fgYellow')).replace("//","/"))
-
+                swaggerData[controller.baseRoute]= {
+                    [item.method.toLowerCase()]:{}
+                }
             }
         })
         baseRouter.use(controller.baseRoute, router)
