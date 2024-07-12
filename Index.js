@@ -202,7 +202,7 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                          "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//","/"),
                          "description":item?.desc ? item.desc : "",
                          "responses": item?.responses ? item.responses : {},
-                         "parameters":item?.parameters ? item.parameters : {}
+                         "parameters":item?.parameters ? item.parameters : []
                     },
                     tags: item?.tags ? item.tags : []
                 }
