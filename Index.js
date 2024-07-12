@@ -6,11 +6,11 @@ const path = require('path');
 let fetcher = false;
 let rl = readline.createInterface(process.stdin, process.stdout);
 let routeCount = 0;
-let swaggerData = {};
+let paths = {};
 
 module.exports.swaggerDoc = (name, version, description, url, tags) => {
 const swagger = {
-    Swift: version,
+    swagger: "3.0.0",
     info: {
       title: name,
       description,
@@ -18,10 +18,11 @@ const swagger = {
       contact: { name: 'Swift' }
     },
     servers: [ { url } ],
-    paths: { },
+    paths,
     components: {},
     tags
   }
+  return swagger
 }
 
 module.exports.errorHandler = (trace)=>{
@@ -195,9 +196,17 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                 router[item.method](item.route, usage)
                 routeCount += 1
                 console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed')+ colorful(controller.baseRoute + item.route, 'fgCyan')+ colorful(" Loaded.", 'fgYellow')).replace("//","/"))
-                swaggerData[controller.baseRoute]= {
-                    [item.method.toLowerCase()]:{}
+
+                paths[(controller.baseRoute + item.route).replace("//","/")] = {
+                    [item.method.toLowerCase()]:{
+                         "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//","/"),
+                         "description":item?.desc ? item.desc : "",
+                         "responses": item?.responses ? item.responses : {},
+                         "parameters":item?.parameters ? item.parameters : {}
+                    },
+                    tags: item?.tags ? item.tags : []
                 }
+
             }
         })
         baseRouter.use(controller.baseRoute, router)
