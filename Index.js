@@ -7,10 +7,10 @@ let fetcher = false;
 let rl = readline.createInterface(process.stdin, process.stdout);
 let routeCount = 0;
 let paths = {};
-
-module.exports.swaggerDoc = (name, version, description, url, tags) => {
+let tags = []
+module.exports.swaggerDoc = (name, version, description, url) => {
 const swagger = {
-    swagger: "3.0.0",
+    swagger: "2.0",
     info: {
       title: name,
       description,
@@ -19,7 +19,6 @@ const swagger = {
     },
     servers: [ { url } ],
     paths,
-    components: {},
     tags
   }
   return swagger
@@ -177,6 +176,10 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
         const folderPath = path.join(__dirname, "../../", controllersAddress, controllerFile)
         const controller = require(folderPath)
         const router = express.Router();
+        tags.push({
+            name: controller?.name ? controller?.name : controller.baseRoute,
+            description: controller?.desc ? controller?.desc : "",
+        })
         controller.items.forEach(item => {
             if (item?.off) {
                 console.log(colorful(item.method.toUpperCase() + ": ", 'fgRed'), colorful(controller.baseRoute + item.route + " Not loaded.", 'fgYellow'))
@@ -202,11 +205,10 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                          "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//","/"),
                          "description":item?.desc ? item.desc : "",
                          "responses": item?.responses ? item.responses : {},
-                         "parameters":item?.parameters ? item.parameters : []
+                         "parameters":item?.parameters ? item.parameters : [],
+                         tags: [controller?.name ? controller?.name : controller.baseRoute]
                     },
-                    tags: item?.tags ? item.tags : []
                 }
-
             }
         })
         baseRouter.use(controller.baseRoute, router)
