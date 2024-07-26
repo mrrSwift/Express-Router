@@ -200,7 +200,7 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                 routeCount += 1
                 console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed')+ colorful(controller.baseRoute + item.route, 'fgCyan')+ colorful(" Loaded.", 'fgYellow')).replace("//","/"))
 
-                paths[(controller.baseRoute + item.route).replace("//","/")] = {
+                paths[(item.method.toUpperCase()+"::"+controller.baseRoute + item.route).replace("//","/")] = {
                     [item.method.toLowerCase()]:{
                          "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//","/"),
                          "description":item?.desc ? item.desc : "",
