@@ -5,33 +5,37 @@ const os = require('os');
 const path = require('path');
 let fetcher = false;
 let rl = readline.createInterface(process.stdin, process.stdout);
+const { reader, writer, saver } = require('./translate')
 let routeCount = 0;
 let paths = {};
 let tags = []
+
+
+
 module.exports.swaggerDoc = (name, version, description, url) => {
-const swagger = {
-    swagger: "2.0",
-    info: {
-      title: name,
-      description,
-      version,
-      contact: { name: 'Swift' }
-    },
-    servers: [ { url } ],
-    paths,
-    tags
-  }
-  return swagger
+    const swagger = {
+        swagger: "2.0",
+        info: {
+            title: name,
+            description,
+            version,
+            contact: { name: 'Swift' }
+        },
+        servers: [{ url }],
+        paths,
+        tags
+    }
+    return swagger
 }
 
-module.exports.errorHandler = (trace)=>{
+module.exports.errorHandler = (trace) => {
     return (err, req, res, next) => {
         const statusCode = res.statusCode ? res.statusCode : 500;
         const errMsg = {
             title: "",
             msg: err.message,
         }
-        if(trace){
+        if (trace) {
             errMsg.stackTrace = err.stack
         }
         switch (statusCode) {
@@ -79,7 +83,8 @@ module.exports.cli = () => {
     }
     fetcher = true
     rl.on('line', async (input) => {
-        switch (input) {
+        const cmd = input.split(' ')
+        switch (cmd[0].toLowerCase()) {
             case "routes":
                 console.log(colorful(routeCount + " Route loaded", 'fgRed'))
 
@@ -125,6 +130,76 @@ module.exports.cli = () => {
                 mkdir(path.join(process.cwd(), `/models/`), () => {
                     console.log('The *models* folder has been created\n')
                 });
+                break;
+            case "swiftly":
+
+                switch (cmd[1].toLowerCase()) {
+                    case "write":
+                        if (cmd.length < 5 ) {
+                            console.info(`Commend is wrong!
+                                Usage:    swiftly write => 'File address' 'String secret' 'File name'
+                                Example:  swiftly write ./secret.txt dosad9sadb9as secret
+        
+                                Usage:    swiftly read  => 'File address' 'String secret'
+                                Example:  swiftly read ./mmd.swiftly dosad9sadb9as 
+        
+                                Usage:    swiftly save  => 'File address' 'String secret' 'File address'
+                                Example:  save ./secret.swiftly dosad9sadb9as ./secret.txt
+                                    `)
+                        } else {
+                            writer(cmd[2], cmd[3], cmd[4])
+                        }
+
+                        break;
+                    case "read":
+                        if (cmd.length < 4 ) {
+                            console.info(`Commend is wrong!
+                                Usage:    swiftly write => 'File address' 'String secret' 'File name'
+                                Example:  swiftly write ./secret.txt dosad9sadb9as secret
+        
+                                Usage:    swiftly read  => 'File address' 'String secret'
+                                Example:  swiftly read ./mmd.swiftly dosad9sadb9as 
+        
+                                Usage:    swiftly save  => 'File address' 'String secret' 'File address'
+                                Example:  save ./secret.swiftly dosad9sadb9as ./secret.txt
+                                    `)
+                        } else {
+                        console.log(reader(cmd[2], cmd[3]))
+                        }
+                        break;
+                    case "save":
+                        if (cmd.length < 5 ) {
+                            console.info(`Commend is wrong!
+                                Usage:    swiftly write => 'File address' 'String secret' 'File name'
+                                Example:  swiftly write ./secret.txt dosad9sadb9as secret
+        
+                                Usage:    swiftly read  => 'File address' 'String secret'
+                                Example:  swiftly read ./mmd.swiftly dosad9sadb9as 
+        
+                                Usage:    swiftly save  => 'File address' 'String secret' 'File address'
+                                Example:  save ./secret.swiftly dosad9sadb9as ./secret.txt
+                                    `)
+                        } else {
+                        saver(cmd[2], cmd[3], cmd[4])
+                        }
+                        break;
+                    case "?":
+                        console.info(`
+                        Usage:    swiftly write => 'File address' 'String secret' 'File name'
+                        Example:  swiftly write ./secret.txt dosad9sadb9as secret
+
+                        Usage:    swiftly read  => 'File address' 'String secret'
+                        Example:  swiftly read ./mmd.swiftly dosad9sadb9as 
+
+                        Usage:    swiftly save  => 'File address' 'String secret' 'File address'
+                        Example:  save ./secret.swiftly dosad9sadb9as ./secret.txt
+                            `)
+                        break;
+                    default:
+                        console.log("Commend not found! write 'swiftly ?' for help.")
+                        break;
+                }
+
                 break;
 
             default:
@@ -198,15 +273,15 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
                 usage.push(item.use)
                 router[item.method](item.route, usage)
                 routeCount += 1
-                console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed')+ colorful(controller.baseRoute + item.route, 'fgCyan')+ colorful(" Loaded.", 'fgYellow')).replace("//","/"))
+                console.log((colorful(item.method.toUpperCase() + ": ", 'fgRed') + colorful(controller.baseRoute + item.route, 'fgCyan') + colorful(" Loaded.", 'fgYellow')).replace("//", "/"))
 
-                paths[(item.method.toUpperCase()+"::"+controller.baseRoute + item.route).replace("//","/")] = {
-                    [item.method.toLowerCase()]:{
-                         "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//","/"),
-                         "description":item?.desc ? item.desc : "",
-                         "responses": item?.responses ? item.responses : {},
-                         "parameters":item?.parameters ? item.parameters : [],
-                         tags: [controller?.name ? controller?.name : controller.baseRoute]
+                paths[(item.method.toUpperCase() + "::" + controller.baseRoute + item.route).replace("//", "/")] = {
+                    [item.method.toLowerCase()]: {
+                        "summary": item.method.toUpperCase() + " " + (controller.baseRoute + item.route).replace("//", "/"),
+                        "description": item?.desc ? item.desc : "",
+                        "responses": item?.responses ? item.responses : {},
+                        "parameters": item?.parameters ? item.parameters : [],
+                        tags: [controller?.name ? controller?.name : controller.baseRoute]
                     },
                 }
             }
@@ -217,6 +292,7 @@ module.exports.autoFetch = (express, pAddress = "hasPermission", cAddress = "con
 
     return baseRouter
 }
+
 const colorCons = {
     reset: "\x1b[0m",
     bright: "\x1b[1m",
@@ -242,6 +318,7 @@ const colorCons = {
     bgCyan: "\x1b[46m",
     bgWhite: "\x1b[47m"
 }
+
 const colorful = (text, color) => {
     return colorCons[color] + text + colorCons.reset
 }
